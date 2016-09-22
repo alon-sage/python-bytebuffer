@@ -602,3 +602,24 @@ class ByteBuffer(object):
             self._position += length
 
         return length
+
+    def read_from_stream(self, stream):
+        chunk = stream.read(self._limit - self._position)
+        length = len(chunk)
+
+        if length:
+            dst_offset = self._offset + self._position
+            self._position += length
+            self._array[dst_offset:dst_offset + length] = chunk
+
+        return length
+
+    def write_to_stream(self, stream):
+        length = self._limit - self._position
+
+        if length:
+            src_offset = self._offset + self._position
+            length = stream.write(self._array[src_offset:src_offset + length])
+            self._position += length
+
+        return length
