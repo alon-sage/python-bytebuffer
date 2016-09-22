@@ -111,7 +111,9 @@ class ByteBuffer(object):
 
     def compact(self):
         length = self._limit - self._position
-        self._array[0:length] = self._array[self._position:self._position + length]
+
+        if length:
+            self._array[0:length] = self._array[self._position:self._position + length]
 
         self._position = length
         self._limit = self._length
@@ -175,6 +177,28 @@ class ByteBuffer(object):
         buffer._position += length
         self._position += length
         self._array[dst_offset:dst_offset + length] = buffer._array[src_offset:src_offset + length]
+
+    def put_bytes(self, array, offset=0, length=None):
+        if not isinstance(array, bytes):
+            raise TypeError('Can put only bytes')
+
+        array_len = len(array)
+
+        if not (0 <= offset <= array_len):
+            raise ValueError('Offset out of range')
+
+        if length is None:
+            length = array_len - offset
+        else:
+            if not (0 <= length <= array_len - offset):
+                raise ValueError('Length out of range')
+
+        if length > self._limit - self._position:
+            raise BufferOverflowError('Too many data to put')
+
+        dst_offset = self._offset + self._position
+        self._position += length
+        self._array[dst_offset:dst_offset + length] = array[offset:offset + length]
 
     def get_bytes(self, length=None):
         if length is None:
@@ -521,3 +545,24 @@ class ByteBuffer(object):
             return True
         else:
             return False
+
+    def read_from_file(self, f):
+        chunk = f.read(self._limit - self._position)
+        length = len(chunk)
+
+        if length:
+            dst_offset = self._offset + self._position
+            self._position += length
+            self._array[dst_offset:dst_offset + length] = chunk
+
+        return length
+
+    def write_to_file(self, f):
+        length = self._limit - self._position
+
+        if length:
+            src_offset = self._offset + self._position
+            self._position = self._limit
+            f.write(self._array[src_offset:])
+
+        return length
