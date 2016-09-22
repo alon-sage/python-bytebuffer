@@ -94,7 +94,7 @@ class PerformanceTest(object):
         print()
 
 
-test = PerformanceTest(10, 10 ** 5, 10, 10.0)
+test = PerformanceTest(10 ** 3, 10 ** 5, 10, 10.0)
 buf = ByteBuffer.allocate(5 * 10 ** 8)
 
 for name in dir(buf):
