@@ -28,13 +28,15 @@ class ByteBuffer(object):
         if not isinstance(array, bytearray):
             raise TypeError('Can wrap only bytearray')
 
-        if not (0 <= offset <= len(array)):
+        array_len = len(array)
+
+        if not (0 <= offset <= array_len):
             raise ValueError('Offset out of range')
 
         if length is None:
-            length = len(array) - offset
+            length = array_len - offset
         else:
-            if not (0 <= length <= len(array) - offset):
+            if not (0 <= length <= array_len - offset):
                 raise ValueError('Length out of range')
 
         return cls(array, offset, length)
@@ -119,13 +121,15 @@ class ByteBuffer(object):
         if not isinstance(array, bytearray):
             raise TypeError('Can put only bytearray')
 
-        if not (0 <= offset <= len(array)):
+        array_len = len(array)
+
+        if not (0 <= offset <= array_len):
             raise ValueError('Offset out of range')
 
         if length is None:
-            length = len(array) - offset
+            length = array_len - offset
         else:
-            if not (0 <= length <= len(array) - offset):
+            if not (0 <= length <= array_len - offset):
                 raise ValueError('Length out of range')
 
         if length > self._limit - self._position:
@@ -139,13 +143,15 @@ class ByteBuffer(object):
         if not isinstance(array, bytearray):
             raise TypeError('Can get only to bytearray')
 
-        if not (0 <= offset <= len(array)):
+        array_len = len(array)
+
+        if not (0 <= offset <= array_len):
             raise ValueError('Offset out of range')
 
         if length is None:
-            length = len(array) - offset
+            length = array_len - offset
         else:
-            if not (0 <= length <= len(array) - offset):
+            if not (0 <= length <= array_len - offset):
                 raise ValueError('Length out of range')
 
         if length > self._limit - self._position:
