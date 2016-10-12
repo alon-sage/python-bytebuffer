@@ -156,6 +156,8 @@ class ByteBuffer(object):
         self._position += length
         self._array[dst_offset:dst_offset + length] = array[offset:offset + length]
 
+        return length
+
     def get(self, array, offset=0, length=None):
         if not isinstance(array, bytearray):
             raise TypeError('Can get only to bytearray')
@@ -178,6 +180,8 @@ class ByteBuffer(object):
         self._position += length
         array[offset:offset + length] = self._array[src_offset:src_offset + length]
 
+        return length
+
     def put_buffer(self, buffer):
         if not isinstance(buffer, ByteBuffer):
             raise TypeError('Expected argument of ByteBuffer type')
@@ -192,6 +196,8 @@ class ByteBuffer(object):
         buffer._position += length
         self._position += length
         self._array[dst_offset:dst_offset + length] = buffer._array[src_offset:src_offset + length]
+
+        return length
 
     def put_bytes(self, array, offset=0, length=None):
         if not isinstance(array, bytes):
@@ -214,6 +220,8 @@ class ByteBuffer(object):
         dst_offset = self._offset + self._position
         self._position += length
         self._array[dst_offset:dst_offset + length] = array[offset:offset + length]
+
+        return length
 
     def get_bytes(self, length=None):
         if length is None:
