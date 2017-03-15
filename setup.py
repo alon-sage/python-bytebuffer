@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='bytebuffer',
-    version='0.1.1',
+    version='0.1.2',
     author='Ivan Babintsev',
     author_email='alon.sage@gmail.com',
     license='Apache License 2.0',
