@@ -235,7 +235,7 @@ class ByteBuffer(object):
 
         src_offset = self._offset + self._position
         self._position += length
-        return self._array[src_offset:src_offset + length]
+        return bytes(self._array[src_offset:src_offset + length])
 
     def put_SBInt8(self, value):
         if self._limit - self._position < 1:
